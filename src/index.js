@@ -1,17 +1,73 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+
+function Tile(props) {
+  return (
+    <button className="tile" onClick={props.onClick}>{props.letter}</button>
+  );
+}
+
+class Board extends React.Component {
+  renderTile(i) {
+    return (
+      <Tile
+        letter={this.props.tiles[i]}
+        onClick={() => this.props.onClick(i)}
+      />
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        {this.renderTile(0)}
+        {this.renderTile(1)}
+        {this.renderTile(2)}
+        {this.renderTile(3)}
+        {this.renderTile(4)}
+        {this.renderTile(5)}
+      </div>
+    )
+  }
+}
+
+class Game extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tiles: ['a','b','c','d','e','f'],
+      stepNumber: 0,
+      history: []
+    }
+  };
+
+  handleClick(i) {
+    this.setState({
+      history: this.state.history.concat([i]),
+      stepNumber: this.state.stepNumber + 1
+    })
+  }
+
+  render() {
+    const tiles = this.state.tiles.slice();
+    return (
+      <div>
+      <div className="info">{this.state.stepNumber} - {this.state.history} </div>
+      <Board 
+        tiles={tiles}
+        onClick={(i) => this.handleClick(i)}
+      />
+      </div>
+    )
+  }
+}
+
+// =====================================================
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Game />
   </React.StrictMode>,
   document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
