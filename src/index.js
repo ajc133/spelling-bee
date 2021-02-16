@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './index.css';
 
 function Tile(props) {
   return (
@@ -112,7 +113,7 @@ class Game extends React.Component {
   render() {
     const outerLetters = this.outerLetters.slice();
     return (
-      <div>
+      <div id="game">
         <div className="info">
           {this.state.word.length} - {this.state.word}
         </div>
