@@ -53,6 +53,7 @@ class Game extends React.Component {
     }
     this.outerLetters = ['a','b','c','d','e','f'];
     this.centerLetter = 's';
+    this.wordList = ['deafs'];
   };
 
   handleClickOuter(i) {
@@ -73,13 +74,39 @@ class Game extends React.Component {
   
   // Has to be an arrow function to properly bind `this`
   submitWord = () => {
-    alert(this.state.word);
+    if(this.followsRules()) {
+      console.log('Submitted');
+    }
   }
 
   backspace = () => {
     this.setState({
       word: this.state.word.slice(0, -1)
     });
+  }
+
+  followsRules = () => {
+    /**
+      Words must contain at least 4 letters.
+      Words must include the center letter.
+      Our word list does not include words that are obscure, hyphenated, or proper nouns.
+      No cussing either, sorry.
+      Letters can be used more than once.
+     */
+
+    if (this.state.word.length < 4) {
+      alert('Too short');
+      return(false);
+    } else if( !this.state.word.includes(this.centerLetter) ){
+      alert('Must contain center letter');
+      return(false);
+    } else if( this.wordList.indexOf(this.state.word) === -1 ){
+      alert('Not in wordlist');
+      return(false);
+    } else {
+      return(true);
+    }
+
   }
 
   render() {
@@ -101,6 +128,7 @@ class Game extends React.Component {
     )
   }
 }
+
 
 // =====================================================
 
