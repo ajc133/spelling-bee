@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+
 function Tile(props) {
   return (
     <button className="tile" onClick={props.onClick}>{props.letter}</button>
@@ -73,10 +75,14 @@ class Game extends React.Component {
     })
   }
   
-  // Has to be an arrow function to properly bind `this`
-  submitWord = () => {
-    if(this.followsRules()) {
-      console.log('Submitted');
+  onKeyPressed(e) {
+    const key = e.key.toLowerCase();
+    if (alphabet.includes(key)) {
+      this.handleClick(key);
+    } else if (key === "backspace" || key === "delete") {
+      this.backspace();
+    } else if (key === "enter") {
+      this.submitWord();
     }
   }
 
@@ -84,6 +90,21 @@ class Game extends React.Component {
     this.setState({
       word: this.state.word.slice(0, -1)
     });
+  }
+
+  componentWillMount() {
+    document.addEventListener("keydown", this.onKeyPressed.bind(this));
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.onKeyPressed.bind(this));
+  }
+  
+  // Has to be an arrow function to properly bind `this`
+  submitWord = () => {
+    if(this.followsRules()) {
+      console.log('Submitted');
+    }
   }
 
   followsRules = () => {
@@ -113,7 +134,10 @@ class Game extends React.Component {
   render() {
     const outerLetters = this.outerLetters.slice();
     return (
-      <div id="game">
+      <div 
+        id="game"
+        onKeyDown={this.onKeyPressed}
+      >
         <div className="info">
           {this.state.word.length} - {this.state.word}
         </div>
