@@ -31,7 +31,7 @@ class Board extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="board">
         <div className="inner">
           {this.renderCenter()}
         </div>
@@ -56,7 +56,7 @@ class Game extends React.Component {
     }
     this.outerLetters = ['a','b','c','d','e','f'];
     this.centerLetter = 's';
-    this.wordList = ['deafs'];
+    this.wordList = ['deafs', 'deeds'];
   };
 
   handleClickOuter(i) {
@@ -103,8 +103,14 @@ class Game extends React.Component {
   // Has to be an arrow function to properly bind `this`
   submitWord = () => {
     if(this.followsRules()) {
-      console.log('Submitted');
+      document.getElementById('messages').textContent = "Nice!";
+    } else {
+      document.getElementById('messages').textContent = "Submitted";
     }
+    console.log('Submitted');
+    this.setState({
+      word: ''
+    });
   }
 
   followsRules = () => {
@@ -138,10 +144,11 @@ class Game extends React.Component {
         id="game"
         onKeyDown={this.onKeyPressed}
       >
+        <p id="messages"></p>
         <div className="info">
           {this.state.word.length} - {this.state.word}
         </div>
-        <Board
+        <Board 
           outerLetters={outerLetters}
           centerLetter={this.centerLetter}
           onClickOuter={(i) => this.handleClickOuter(i)}

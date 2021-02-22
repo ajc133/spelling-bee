@@ -19,7 +19,7 @@ code {
   align-items: center;
 }
 
-#game {
+#board {
   display: flex-end;
   justify-content: center;
   margin: 10 auto;
